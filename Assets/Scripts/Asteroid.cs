@@ -8,11 +8,11 @@ public class Asteroid : MonoBehaviour
 
     public Sprite[] sprites;
 
-    public float size = 1.0f;
+    public float size = 9.0f;
 
-    public float minSize = 0.5f;
+    public float minSize = 7.0f;
 
-    public float maxSize = 1.5f;
+    public float maxSize = 15.0f;
 
     public float speed = 50.0f;
     public float maxLifeTime = 30.0f;
@@ -59,7 +59,7 @@ public class Asteroid : MonoBehaviour
         position += Random.insideUnitCircle * 0.5f;
 
         Asteroid half = Instantiate(this, position, this.transform.rotation);
-        half.size = this.size * 0.5f;
+        half.size = this.size * 0.7f;
 
         half.SetTrajectory(Random.insideUnitCircle.normalized * this.speed);
     }

@@ -13,6 +13,8 @@ public class GameManager : MonoBehaviour
     {
         this.explosion.transform.position = asteroid.transform.position;
         this.explosion.Play();
+
+        score += 100;
     }
 
     public void PlayerDied()

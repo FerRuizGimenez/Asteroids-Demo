@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -9,21 +10,56 @@ public class GameManager : MonoBehaviour
     public int lives = 3;
     public int score = 0;
 
+    public GameObject gameOverUI;
+    public Text scoreText;
+    public Text livesText;
+
+    private void Start()
+    {
+        NewGame();   
+    }
+
+    private void Update()
+    {
+        if (this.lives <= 0 && Input.GetKeyDown(KeyCode.Return))
+        {
+            NewGame();
+        }
+    }
+
+    public void NewGame()
+    {
+        Asteroid[] asteroids = FindObjectsOfType<Asteroid>();
+
+        for (int i = 0; i < asteroids.Length; i++)
+        {
+            Destroy(asteroids[i].gameObject);
+        }
+
+        this.gameOverUI.SetActive(false);
+
+        SetScore(0);
+        SetLives(3);
+        Respawn();
+    }
+
+
     public void AsteroidDestroyed(Asteroid asteroid)
     {
         this.explosion.transform.position = asteroid.transform.position;
         this.explosion.Play();
 
-        score += 100;
+        SetScore(this.score + 100);
     }
 
     public void PlayerDied()
     {
         this.explosion.transform.position = this.player.transform.position;
         this.explosion.Play();
-        this.lives--;
 
-        if(this.lives <= 0)
+        SetLives(this.lives - 1);
+
+        if (this.lives <= 0)
         {
             GameOver();
         }
@@ -49,9 +85,19 @@ public class GameManager : MonoBehaviour
 
     private void GameOver()
     {
-        this.lives = 3;
-        this.score = 0;
 
-        Invoke(nameof(Respawn), this.respawnTime);
+        this.gameOverUI.SetActive(true);
+    }
+
+    private void SetLives(int lives)
+    {
+        this.lives = lives;
+        this.livesText.text = lives.ToString();
+    }
+
+    private void SetScore(int score)
+    {
+        this.score = score;
+        this.scoreText.text = score.ToString();
     }
 }
